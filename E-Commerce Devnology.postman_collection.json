@@ -1,0 +1,132 @@
+{
+	"info": {
+		"_postman_id": "d1792169-c754-4938-b71f-7644c94eefd9",
+		"name": "E-Commerce Devnology",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Get all products paginated",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/products",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products"
+							]
+						},
+						"description": "# Get all products paginated\n\nAllows getting the products from both providers (european and brazilian), paginated.\nDefault page size is 20."
+					},
+					"response": []
+				},
+				{
+					"name": "Filter products by name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/products/filter?name=Gorgeous",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								"filter"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Gorgeous"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a product by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/product/150",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"product",
+								"150"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Purchase",
+			"item": [
+				{
+					"name": "Make a purchase",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"products\": [117,118,119],\n    \"client\":{\n        \"name\": \"Daniel Pires\",\n        \"email\": \"teste@mail.com\",\n        \"phone\": \"5947068\",\n        \"address\":\"Campinho\",\n        \"city\":\"Mindelo\",\n        \"zip\": \"2110\",\n        \"country\": \"Cape Verde\",\n        \"cpf\":\"1345678\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/purchase",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"purchase"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost/api",
+			"type": "default"
+		}
+	]
+}

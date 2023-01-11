@@ -16,6 +16,6 @@ class Keyword implements Filter
      */
     public static function apply(Builder $builder, $value)
     {
-        return $builder->where('keyword', '=', $value);
+        return $builder->where('keyword', 'ILIKE', '%' . $value . '%');
     }
 }

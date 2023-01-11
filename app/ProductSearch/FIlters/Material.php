@@ -16,6 +16,6 @@ class Material implements Filter
      */
     public static function apply(Builder $builder, $value)
     {
-        return $builder->where('material', '=', $value);
+        return $builder->where('material', 'ILIKE', '%' . $value . '%');
     }
 }

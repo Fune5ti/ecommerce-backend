@@ -16,6 +16,6 @@ class Department implements Filter
      */
     public static function apply(Builder $builder, $value)
     {
-        return $builder->where('department', '=', $value);
+        return $builder->where('department', 'ILIKE', '%' . $value . '%');
     }
 }

@@ -6,6 +6,7 @@ use  App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class ProductSearch
 {
@@ -21,7 +22,6 @@ class ProductSearch
         foreach ($request->all() as $filterName => $value) {
 
             $decorator = static::createFilterDecorator($filterName);
-
             if (static::isValidDecorator($decorator)) {
                 $query = $decorator::apply($query, $value);
             }

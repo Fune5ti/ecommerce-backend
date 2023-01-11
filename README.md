@@ -19,6 +19,13 @@ This repo contains the devnology fullstack developer test, laravel backend.
     3. After completed run: `php artisan sync:products` (Further explanation below)
     4. After finished switch back the .env variable `DB_HOST` value to `pgsql` so that the app can connect to the database and the its data
 
+# Decision Making
+
+I decided to paginate the all products route, because there are a lot of products, which would make the frontend slower to load them all at once.
+For the filter i applied a solution that i quite like because it allows for the creation of new filter by just adding a new class for it under ProductSearch/Filters.
+As for the controller there is a service for each of them on where i created the actual logic to save to database, and in the controllers those methods are invoked.
+For the validation of the create purchase form i used a FormRequest because it allows for a organized way to manage the rules for the form, and also return all the errors simply.
+
 ## What is `php artisan sync:products`?
 
 Since there was a need to obtain the products for the ecommerce to be presented in frontend i made the decision to create a command that can be made to run automatically on a desired periodicity or via the terminal by the user.

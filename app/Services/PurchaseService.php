@@ -26,7 +26,7 @@ class PurchaseService
         ]);
 
         foreach ($body['products'] as $product) {
-            $purchase->products()->attach($product, ['quantity' => $product["quantity"]]);
+            $purchase->products()->syncWithoutDetaching($product["id"], ['quantity' => $product["quantity"]]);
         }
 
         return [
@@ -55,7 +55,6 @@ class PurchaseService
     public function computePurchaseValues(array $productIds)
     {
         $ids =  array_column($productIds, 'id');
-        $products = Product::whereIn('id', $ids)->get();
         $totalPrice = 0;
         $total_price_wt_discount = 0;
         $total_value_of_discount = 0;

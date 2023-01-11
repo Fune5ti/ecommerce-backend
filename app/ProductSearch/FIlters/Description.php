@@ -16,6 +16,6 @@ class Description implements Filter
      */
     public static function apply(Builder $builder, $value)
     {
-        return $builder->where('description', 'LIKE', '%' . $value . '%');
+        return $builder->where('description', 'ILIKE', '%' . $value . '%');
     }
 }

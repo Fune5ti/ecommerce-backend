@@ -4,13 +4,13 @@ namespace App\Services;
 
 use App\Models\Purchase;
 use App\Models\Product;
+use Illuminate\Support\Facades\Log;
 
 class PurchaseService
 {
     public function createPurchase(array $body): array
     {
         $prices = $this->computePurchaseValues($body['products']);
-
         $purchase = Purchase::create([
             'client_name' => $body['client']['name'],
             'client_email' => $body['client']['email'],
@@ -25,7 +25,9 @@ class PurchaseService
             'total_value_of_discount' => $prices['total_value_of_discount']
         ]);
 
-        $purchase->products()->attach($body['products']);
+        foreach ($body['products'] as $product) {
+            $purchase->products()->attach($product, ['quantity' => $product["quantity"]]);
+        }
 
         return [
             'success' => true,
@@ -52,16 +54,17 @@ class PurchaseService
 
     public function computePurchaseValues(array $productIds)
     {
-
-        $products = Product::whereIn('id', $productIds)->get();
+        $ids =  array_column($productIds, 'id');
+        $products = Product::whereIn('id', $ids)->get();
         $totalPrice = 0;
         $total_price_wt_discount = 0;
         $total_value_of_discount = 0;
 
-        foreach ($products as $product) {
-            $totalPrice += $product->price;
-            $total_price_wt_discount += $product->hasDiscount ? $product->price - ($product->price * $product->discount) : 0;
-            $total_value_of_discount += $product->hasDiscount ? $product->price * $product->discount : 0;
+        foreach ($productIds as $product) {
+            $currentProduct = Product::where('id', $product['id'])->first();
+            $totalPrice += ($currentProduct->price * $product['quantity']);
+            $total_price_wt_discount += $currentProduct->hasDiscount ? $currentProduct->price - ($currentProduct->price * $currentProduct->discount) * $product['quantity'] : 0;
+            $total_value_of_discount += $currentProduct->hasDiscount ? ($currentProduct->price * $currentProduct->discount) * $product['quantity'] : 0;
         }
         return [
             'total_price' => $totalPrice,

@@ -3,9 +3,10 @@
 namespace App\Http\Requests;
 
 use Illuminate\Http\Exceptions\HttpResponseException;
-
+use Illuminate\Http\Response;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class PurchaseCreateRequest extends FormRequest
 {
@@ -25,7 +26,12 @@ class PurchaseCreateRequest extends FormRequest
             'client.zip' => 'required',
             'client.country' => 'required',
             'client.cpf' => 'required',
-            'products' => 'required|array|exists:App\Models\Product,id',
+            'products' => 'required|array',
+            'products.*.id' => [
+                'required',
+                Rule::exists('products', 'id'),
+            ],
+            'products.*.quantity' => 'required|numeric|min:1',
         ];
     }
 
@@ -41,7 +47,7 @@ class PurchaseCreateRequest extends FormRequest
 
             'data'      => $validator->errors()
 
-        ]));
+        ], Response::HTTP_UNPROCESSABLE_ENTITY));
     }
 
 
